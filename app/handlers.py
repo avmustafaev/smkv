@@ -1,10 +1,11 @@
 import asyncio
 from aiogram import Router, F
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart, Command
 from app.loadenv import envi
 from aiogram.enums import ChatAction
 import app.keyboards as kb
+import app.builder as builder
 
 
 router = Router()
@@ -34,7 +35,7 @@ async def get_photo(message: Message):
 async def get_photo(message: Message):
     phone_num = message.contact.phone_number
     # await message.answer_contact(phone_number=phone_num,first_name=message.contact.first_name)
-    await message.answer(f'Ваш номер телефона: {phone_num}')
+    await message.answer(f'Ваш номер телефона: {phone_num}', reply_markup=kb.inline_main)
     
 @router.message(F.video_note)
 async def get_round(message: Message):
@@ -48,6 +49,18 @@ async def cmd_help(message: Message):
         f"{f'{message.from_user.last_name} {message.from_user.first_name}'}, вам нужна помощь?"
     )
     await message.answer(f'Ваш ID: {message.from_user.id}')
+    
+    
+@router.callback_query(F.data == 'basket')
+async def basket(callback: CallbackQuery):
+    await callback.answer('КОрзина')
+    await callback.message.answer('Ваша корзина пуста.', reply_markup=builder.inline_brands())
+    
+@router.callback_query(F.data == 'catalog')
+async def basket(callback: CallbackQuery):
+    await callback.answer('Каталог')
+    await callback.message.answer('Ваш каталог:', reply_markup=builder.brands ())
+
     
 @router.message()
 async def echo(message: Message):
