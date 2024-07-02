@@ -1,14 +1,15 @@
 import os
 import asyncio
 from dotenv import load_dotenv
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command
 import logging
 
 load_dotenv()
 
 bot = Bot(token=os.getenv('TOKEN'))
+kn1pic_id = os.getenv('KN1PIC')
 dp = Dispatcher()
 
 
@@ -16,13 +17,32 @@ dp = Dispatcher()
 async def cmd_start(message: Message):
     await message.reply('Привет!')
     await message.answer('Как дела?')
-    await message.answer_photo(photo='https://sudoteach.com/static/assets/img/aiogram-banner.jpg', caption='Лучший курс по aiogram!')
+    await message.answer_photo(photo=kn1pic_id, caption='Вы присоединились к боту отчётов KN1')
 
 
+
+
+
+@dp.message(F.text =='привет!')
+async def echo(message: Message):
+    await message.answer('ну и тебе тоже')
+    
+    
+@dp.message(F.photo)
+async def get_photo(message: Message):
+    photo_id = message.photo[-1].file_id
+    await message.answer_photo(photo=photo_id)
+    await message.answer(f'ID фотографии: {message.photo[-1].file_id}')
+    
+    
+@dp.message(Command('help'))
+async def cmd_help(message: Message):
+    await message.answer(f'{message.from_user.first_name}, вам нужна помощь?')
+    await message.answer(f'Ваш ID: {message.from_user.id}')
+    
 @dp.message()
 async def echo(message: Message):
     await message.answer('Это неизвестная команда.')
-
 
 async def main():
     await dp.start_polling(bot)
