@@ -1,15 +1,23 @@
+import asyncio
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import CommandStart, Command
 from app.loadenv import envi
+from aiogram.enums import ChatAction
+import app.keyboards as kb
+
 
 router = Router()
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     # await message.reply('Привет!')
-    # await message.answer('Как дела?')
+    await message.answer('Как дела?', reply_markup=kb.main)
+    await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.UPLOAD_PHOTO)
+    await asyncio.sleep(2)
     await message.answer_photo(photo=envi.kn1pic_id, caption='Вы присоединились к боту отчётов KN1')
+    await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.RECORD_VIDEO_NOTE)
+    await asyncio.sleep(2)
     await message.answer_video_note(video_note=envi.video_note_hello)
     
 @router.message(F.text =='привет!')
