@@ -12,13 +12,13 @@ router = Router()
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     # await message.reply('Привет!')
-    await message.answer('Как дела?', reply_markup=kb.main)
+    await message.answer('Как дела?')
     await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.UPLOAD_PHOTO)
     await asyncio.sleep(2)
     await message.answer_photo(photo=envi.kn1pic_id, caption='Вы присоединились к боту отчётов KN1')
     await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.RECORD_VIDEO_NOTE)
     await asyncio.sleep(2)
-    await message.answer_video_note(video_note=envi.video_note_hello)
+    await message.answer_video_note(video_note=envi.video_note_hello, reply_markup=kb.main)
     
 @router.message(F.text =='привет!')
 async def echo(message: Message):
@@ -29,6 +29,12 @@ async def get_photo(message: Message):
     photo_id = message.photo[-1].file_id
     await message.answer_photo(photo=photo_id)
     await message.answer(f'ID фотографии: {message.photo[-1].file_id}')
+    
+@router.message(F.contact)
+async def get_photo(message: Message):
+    phone_num = message.contact.phone_number
+    # await message.answer_contact(phone_number=phone_num,first_name=message.contact.first_name)
+    await message.answer(f'Ваш номер телефона: {phone_num}')
     
 @router.message(F.video_note)
 async def get_round(message: Message):
