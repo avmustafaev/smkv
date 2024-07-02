@@ -10,14 +10,16 @@ load_dotenv()
 
 bot = Bot(token=os.getenv('TOKEN'))
 kn1pic_id = os.getenv('KN1PIC')
+video_note_hello = os.getenv('VNHELLO')
 dp = Dispatcher()
 
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message):
-    await message.reply('Привет!')
-    await message.answer('Как дела?')
+    # await message.reply('Привет!')
+    # await message.answer('Как дела?')
     await message.answer_photo(photo=kn1pic_id, caption='Вы присоединились к боту отчётов KN1')
+    #await message.answer_video_note(video_note=video_note_hello)
 
 
 
@@ -34,6 +36,12 @@ async def get_photo(message: Message):
     await message.answer_photo(photo=photo_id)
     await message.answer(f'ID фотографии: {message.photo[-1].file_id}')
     
+    
+@dp.message(F.video_note)
+async def get_round(message: Message):
+    roundvid = message.video_note.file_id
+    await message.answer_video_note(video_note=roundvid)
+    await message.answer(f'ID кружочка: {message.video_note.file_id}')
     
 @dp.message(Command('help'))
 async def cmd_help(message: Message):
