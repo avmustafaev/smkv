@@ -1,4 +1,4 @@
 .venv
 001.py
 .env
-app/__pycache__/loadenv.cpython-310.pyc
+app/__pycache__/
