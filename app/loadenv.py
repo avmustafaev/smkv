@@ -15,5 +15,7 @@ class Envi:
         self.token = os.getenv("TOKEN")
         self.kn1pic_id = os.getenv("KN1PIC")
         self.video_note_hello = str(os.getenv("VNHELLO"))
+        self.db_url = os.getenv("DBURL")
+        
         
 envi = Envi()
