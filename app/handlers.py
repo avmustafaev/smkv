@@ -15,10 +15,10 @@ async def cmd_start(message: Message):
     # await message.reply('Привет!')
     await message.answer('Как дела?')
     await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.UPLOAD_PHOTO)
-    await asyncio.sleep(2)
+    await asyncio.sleep(0.5)
     await message.answer_photo(photo=envi.kn1pic_id, caption='Вы присоединились к боту отчётов KN1')
     await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.RECORD_VIDEO_NOTE)
-    await asyncio.sleep(2)
+    await asyncio.sleep(0.5)
     await message.answer_video_note(video_note=envi.video_note_hello, reply_markup=kb.main)
     
 @router.message(F.text =='привет!')
