@@ -16,10 +16,10 @@ async def cmd_start(message: Message):
     await message.answer('Как дела?')
     await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.UPLOAD_PHOTO)
     await asyncio.sleep(0.5)
-    await message.answer_photo(photo=envi.kn1pic_id, caption='Вы присоединились к боту отчётов KN1')
+    #await message.answer_photo(photo=envi.kn1pic_id, caption='Вы присоединились к боту отчётов KN1')
     await message.bot.send_chat_action(chat_id=message.from_user.id, action=ChatAction.RECORD_VIDEO_NOTE)
     await asyncio.sleep(0.5)
-    await message.answer_video_note(video_note=envi.video_note_hello, reply_markup=kb.main)
+    await message.answer_video_note(video_note=envi.video_note_hello, reply_markup=kb.inline_main)
     
 @router.message(F.text =='привет!')
 async def echo(message: Message):
@@ -57,7 +57,7 @@ async def basket(callback: CallbackQuery):
     await callback.message.answer('Ваша корзина пуста.', reply_markup=builder.inline_brands())
     
 @router.callback_query(F.data == 'catalog')
-async def basket(callback: CallbackQuery):
+async def catalog(callback: CallbackQuery):
     await callback.answer('Каталог')
     await callback.message.answer('Ваш каталог:', reply_markup=builder.brands ())
 
